@@ -28,8 +28,20 @@ public class Program {
 		
 		List<Produto> produtos = new ArrayList<>();
 		
+		if( lerArquivo(produtos, strPath) ==  true) {
+			File path = new File(strPath);
+			String caminho = path.getParent() + "\\summary1.csv";
+			
+			escreverArquivo(produtos, caminho);
+			
+		}
+		sc.close();
 		
-		try(BufferedReader br = new BufferedReader(new FileReader(strPath))) {
+	}
+	
+	public static boolean lerArquivo(List<Produto> produtos, String caminho) {
+		
+		try(BufferedReader br = new BufferedReader(new FileReader(caminho))) {
 			String linha = br.readLine();
 			
 			while( linha != null) {
@@ -45,10 +57,13 @@ public class Program {
 		}
 		catch(IOException e) {
 			System.out.println("Erro: " + e.getMessage());
+			return false;
 		}
 		
-		File path = new File(strPath);
-		String caminho = path.getParent() + "\\summary.csv";
+		return true;
+	}
+	
+	public static boolean escreverArquivo(List<Produto> produtos, String caminho) {
 		
 		try(BufferedWriter bw = new BufferedWriter(new FileWriter(caminho, true))) {
 			for(Produto p : produtos) {
@@ -61,13 +76,10 @@ public class Program {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-		}
-		finally {
-		
-			
-			sc.close();
+			return false;
 		}
 		
+		return true;
 	}
 
 }
